@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>사국</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@200;300;400;600;700;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Noto Serif KR',serif;
+  overflow-x:hidden;
+  transition:background .7s ease,color .7s ease;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+}
+::selection{background:rgba(120,100,80,.2)}
+#app{opacity:1;transition:opacity .45s ease}
+#app.fade{opacity:0}
+
+:root{
+  --noise:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='.04'/%3E%3C/svg%3E");
+  --noise-h:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.45' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='.1'/%3E%3C/svg%3E");
+}
+
+/* ===== HOME ===== */
+[data-r="home"]{background:#080808;color:#c8c4bc}
+[data-r="home"] ::selection{background:rgba(200,196,188,.15)}
+.home-wrap{
+  min-height:100vh;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;padding:2rem;
+}
+.home-bg{
+  position:fixed;top:0;left:0;width:100%;height:100%;
+  background:radial-gradient(ellipse at 50% 40%,rgba(40,35,28,.6) 0%,transparent 65%);
+  pointer-events:none;
+}
+.home-title{
+  font-size:clamp(3.5rem,10vw,7rem);font-weight:200;
+  letter-spacing:.4em;margin-right:-.4em;margin-bottom:.8rem;
+}
+.home-sub{
+  font-size:clamp(.8rem,2vw,.95rem);font-weight:200;opacity:.35;
+  letter-spacing:.2em;margin-bottom:5rem;
+}
+.home-links{display:flex;flex-direction:column;gap:.3rem;width:min(340px,85vw)}
+.home-link{
+  display:flex;align-items:baseline;gap:1rem;
+  text-decoration:none;color:inherit;padding:1rem 1.5rem;
+  border-left:2px solid transparent;
+  transition:all .4s ease;font-weight:300;
+  font-size:1.05rem;letter-spacing:.12em;position:relative;
+}
+.home-link::after{
+  content:'';position:absolute;left:0;top:0;width:0;height:100%;
+  background:var(--glow);transition:width .6s ease;opacity:.06;
+}
+.home-link:hover{border-left-color:var(--accent);padding-left:2rem}
+.home-link:hover::after{width:100%}
+.home-link .hj{opacity:.2;font-size:.78rem;margin-left:auto;font-weight:200;letter-spacing:.05em}
+.home-link .dash{width:20px;height:1px;background:currentColor;opacity:.15;flex-shrink:0}
+
+/* ===== SHARED NAV ===== */
+.rnav{
+  padding:2rem 0 3rem;display:flex;gap:1.8rem;
+  font-size:.75rem;letter-spacing:.12em;font-weight:300;
+}
+.rnav a{text-decoration:none;color:inherit;opacity:.25;transition:opacity .3s}
+.rnav a:hover{opacity:.7}
+.rnav a.on{opacity:.8}
+.rnav .back{font-size:.9rem}
+.sec-label{
+  font-size:.65rem;letter-spacing:.35em;font-weight:400;
+  text-transform:uppercase;margin-bottom:2rem;
+}
+.foot{
+  margin-top:5rem;padding-top:1.5rem;
+  border-top:1px solid currentColor;opacity:.1;
+  display:flex;gap:1.8rem;font-size:.75rem;letter-spacing:.1em;
+}
+.foot a{text-decoration:none;color:inherit;transition:opacity .3s}
+.foot a:hover{opacity:.5}
+
+/* ===== EAST ===== */
+[data-r="east"]{background:#fafaf7;color:#1a1a18}
+[data-r="east"] ::selection{background:rgba(26,26,24,.1)}
+.east-vert{
+  writing-mode:vertical-rl;position:fixed;left:clamp(1.5rem,4vw,3.5rem);
+  top:50%;transform:translateY(-50%);
+  font-size:clamp(1.8rem,3.5vw,3rem);font-weight:200;
+  letter-spacing:1em;opacity:.06;pointer-events:none;z-index:0;
+}
+.east-body{
+  margin-left:clamp(3rem,14vw,16rem);
+  max-width:520px;padding:5rem 2rem 4rem;position:relative;z-index:1;
+}
+.east-body h2{
+  font-size:clamp(1.6rem,3.5vw,2.2rem);font-weight:200;
+  letter-spacing:.25em;margin-bottom:.2rem;
+}
+.east-body .sub{
+  font-size:.78rem;font-weight:300;opacity:.3;
+  letter-spacing:.2em;margin-bottom:3.5rem;
+}
+.east-rule{border:none;border-top:1px solid rgba(0,0,0,.08);margin:3rem 0}
+.east-body p{font-size:.92rem;line-height:2.1;font-weight:300;margin-bottom:1.4rem}
+[data-r="east"] .sec-label{opacity:.3}
+[data-r="east"] .foot{border-top-color:rgba(0,0,0,.15)}
+
+/* ===== WEST ===== */
+[data-r="west"]{background:#e4dbc8;color:#32291e;background-image:var(--noise-h)}
+[data-r="west"] ::selection{background:rgba(50,41,30,.12)}
+.west-wrap{max-width:640px;margin:0 auto;padding:3rem 2rem 4rem}
+.west-head{margin-bottom:2.5rem}
+.west-head h2{
+  font-size:clamp(1.5rem,3.5vw,2rem);font-weight:300;
+  margin-bottom:.2rem;letter-spacing:.05em;
+}
+.west-head .sub{font-size:.8rem;opacity:.4;font-weight:300;letter-spacing:.1em}
+.west-file{
+  background:rgba(240,233,215,.6);border:1px solid rgba(160,140,110,.35);
+  padding:2rem 2.2rem;margin:1.5rem 0;position:relative;
+}
+.west-file::before{
+  content:'';position:absolute;inset:0;
+  background-image:var(--noise);pointer-events:none;
+}
+.west-file.t1{transform:rotate(-0.25deg)}
+.west-file.t2{transform:rotate(0.2deg)}
+.west-stamp{
+  position:absolute;top:.8rem;right:1.2rem;
+  font-size:.55rem;letter-spacing:.2em;opacity:.25;font-weight:400;
+  border:1px solid currentColor;padding:.15rem .5rem;
+  transform:rotate(1.5deg);
+}
+.west-file p{font-size:.88rem;line-height:1.95;font-weight:300;margin-bottom:1rem}
+.west-file p:last-child{margin-bottom:0}
+[data-r="west"] .sec-label{opacity:.35}
+
+/* ===== SOUTH ===== */
+[data-r="south"]{background:#0c0707;color:#b8a888}
+[data-r="south"] ::selection{background:rgba(140,40,40,.2)}
+.south-glow{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0}
+.south-glow-a{
+  position:absolute;top:15%;left:45%;width:700px;height:700px;
+  transform:translate(-50%,-30%);
+  background:radial-gradient(circle,rgba(110,15,15,.14) 0%,transparent 55%);
+  animation:sPulse 10s ease-in-out infinite;
+}
+.south-glow-b{
+  position:absolute;bottom:10%;right:15%;width:400px;height:400px;
+  background:radial-gradient(circle,rgba(90,60,10,.08) 0%,transparent 50%);
+  animation:sPulse 14s ease-in-out infinite 3s;
+}
+@keyframes sPulse{0%,100%{opacity:1}50%{opacity:.5}}
+.south-wrap{
+  position:relative;z-index:1;max-width:540px;
+  margin:0 auto;padding:6rem 2rem 4rem;
+}
+.south-wrap h2{
+  font-size:clamp(2.2rem,5vw,3.5rem);font-weight:900;
+  color:#7a5828;letter-spacing:.2em;margin-bottom:.3rem;
+}
+.south-wrap .sub{
+  font-size:.82rem;color:#6a5530;font-weight:300;
+  letter-spacing:.25em;margin-bottom:3.5rem;
+}
+.south-div{width:30px;height:1px;background:#5a3818;margin:3rem 0;opacity:.35}
+.south-wrap p{font-size:.93rem;line-height:2.15;font-weight:300;margin-bottom:1.3rem}
+[data-r="south"] .sec-label{color:#7a5828;opacity:.5}
+[data-r="south"] .foot{border-top-color:rgba(184,168,136,.15)}
+
+/* ===== NORTH ===== */
+[data-r="north"]{background:#d8dce2;color:#3a3e46}
+[data-r="north"] ::selection{background:rgba(58,62,70,.1)}
+.north-fog{
+  position:fixed;top:0;left:0;width:100%;height:100%;
+  pointer-events:none;z-index:2;
+  background:linear-gradient(180deg,
+    rgba(216,220,226,.92) 0%,rgba(216,220,226,.15) 25%,
+    rgba(216,220,226,.05) 45%,rgba(216,220,226,.25) 65%,
+    rgba(216,220,226,.6) 82%,rgba(216,220,226,.97) 100%);
+}
+.north-mist{
+  position:fixed;top:40%;left:0;width:100%;height:30%;
+  background:linear-gradient(90deg,
+    rgba(216,220,226,.5) 0%,rgba(216,220,226,.1) 30%,
+    rgba(216,220,226,.15) 60%,rgba(216,220,226,.45) 100%);
+  pointer-events:none;z-index:2;
+  animation:mistDrift 25s ease-in-out infinite alternate;
+}
+@keyframes mistDrift{0%{transform:translateX(-5%);opacity:.7}100%{transform:translateX(5%);opacity:1}}
+.north-wrap{
+  position:relative;z-index:1;max-width:500px;
+  margin:0 auto;padding:10rem 2rem 8rem;
+}
+.north-wrap h2{
+  font-size:clamp(2rem,5vw,3rem);font-weight:200;
+  opacity:.2;letter-spacing:.5em;margin-right:-.5em;margin-bottom:.5rem;
+}
+.north-wrap .sub{font-size:.8rem;opacity:.15;letter-spacing:.25em;margin-bottom:5rem}
+.nr{
+  opacity:0;filter:blur(6px);transform:translateY(30px);
+  transition:opacity 1.6s ease,filter 1.6s ease,transform 1.6s ease;
+}
+.nr.vis{opacity:.7;filter:blur(0.2px);transform:translateY(0)}
+.north-wrap p{font-size:.92rem;line-height:2.3;font-weight:300;margin-bottom:1.3rem}
+[data-r="north"] .sec-label{opacity:.2}
+[data-r="north"] .foot{border-top-color:rgba(58,62,70,.1);position:relative;z-index:3}
+
+/* ===== CHARACTER CARDS ===== */
+.chars{display:flex;flex-wrap:wrap;gap:2rem;margin-top:1.5rem}
+.char{width:min(220px,100%)}
+.char-port{
+  width:100%;aspect-ratio:3/4;margin-bottom:1rem;
+  display:flex;align-items:center;justify-content:center;
+  font-size:.6rem;letter-spacing:.2em;font-weight:300;overflow:hidden;
+}
+[data-r="east"] .char-port{border:1px solid rgba(0,0,0,.06);background:#f5f5f2;color:#aaa}
+[data-r="west"] .char-port{border:1px solid rgba(140,120,90,.3);background:rgba(220,210,190,.25);color:#9a8a70;transform:rotate(0.4deg)}
+[data-r="south"] .char-port{
+  border:1px solid rgba(122,88,40,.2);background:rgba(15,8,5,.6);color:rgba(122,88,40,.35);
+  box-shadow:0 0 40px rgba(100,15,15,.08),inset 0 0 30px rgba(0,0,0,.3);
+}
+[data-r="north"] .char-port{background:rgba(190,196,206,.25);color:rgba(100,106,120,.2);filter:blur(0.5px)}
+.char-name{font-size:.95rem;font-weight:600;margin-bottom:.3rem;letter-spacing:.05em}
+.char-role{font-size:.75rem;line-height:1.7;font-weight:400;opacity:.5;margin-bottom:.6rem}
+.char-desc{font-size:.82rem;line-height:1.9;font-weight:300;opacity:.55}
+.no-char{opacity:.2;font-size:.82rem;font-weight:300;font-style:italic;margin-top:.5rem}
+.quote{font-size:.9rem;font-weight:300;opacity:.4;font-style:italic;letter-spacing:.05em;margin-bottom:2rem}
+.home-prologue{
+  max-width:460px;text-align:center;font-size:clamp(.75rem,1.8vw,.85rem);
+  font-weight:300;opacity:.3;line-height:2;margin-bottom:4rem;letter-spacing:.02em;
+}
+
+/* ===== SOUND BUTTON ===== */
+#snd{
+  position:fixed;bottom:1.5rem;right:1.5rem;z-index:100;
+  width:40px;height:40px;border-radius:50%;
+  border:1px solid currentColor;background:transparent;color:inherit;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  opacity:.45;transition:opacity .3s,background .3s;font-size:.85rem;
+}
+#snd:hover{opacity:.7;background:rgba(128,128,128,.1)}
+#snd.on{opacity:.65}
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+.an{animation:fadeUp .7s ease both}
+.an2{animation:fadeUp .7s ease .1s both}
+.an3{animation:fadeUp .7s ease .2s both}
+.an4{animation:fadeUp .7s ease .3s both}
+.an5{animation:fadeUp .7s ease .4s both}
+
+@media(max-width:680px){
+  .east-vert{display:none}
+  .east-body{margin-left:0;padding:3.5rem 1.5rem}
+  .chars{flex-direction:column}
+  .char{width:100%;max-width:260px}
+  .south-wrap,.north-wrap,.west-wrap{padding-left:1.5rem;padding-right:1.5rem}
+  .west-file{padding:1.5rem 1.6rem}
+  .home-link{padding:.8rem 1rem}
+  .north-wrap{padding-top:7rem}
+}
+</style>
+</head>
+<body data-r="home">
+<div id="app"></div>
+<button id="snd" title="소리 켜기/끄기">♪</button>
+
+<script>
+const D={
+prologue:'그날 바다가 먼저 울었다. 물 밑에서 형체를 알 수 없는 것들이 기어 올라왔고, 사람들은 그것을 이형(異形)이라 불렀다. 길이 끊기고 나라가 무너진 자리에 땅은 넷으로 갈라졌다. 성벽을 쌓은 자, 성벽 밖에 남겨진 자, 신에게 엎드린 자, 그리고 안개 너머로 사라진 자. 사람들은 이 시대를 분열 이후라 부르며, 저마다의 방식으로 살아남았다.',
+east:{
+  name:'동부',h:'東部',title:'청와(靑瓦)의 성',
+  quote:'"벽 안의 자는 죽지 않는다."',
+  intro:['사방에서 가장 부유하고 가장 안전하며 가장 강한 땅이다. 검은 기와가 끝없이 이어지고, 흰 담장 위로 쪽빛 깃발이 나부낀다. 이형의 발톱이 닿은 적 없는 유일한 땅이며, 다른 지역의 아이들은 동부를 \'살아서 가는 하늘\'이라 부른다.'],
+  sections:[
+    {t:'정청(政廳)과 공무원',p:['동부는 정청이라는 하나의 기관이 다스린다. 정청에 소속되어 사방의 현장으로 출정하는 자들을 공무원이라 부른다. 공무원은 품계로 나뉘며, 이형 토벌과 지역 감찰, 물자 통제를 맡는다. 군대처럼 움직이되 관리처럼 기록하는 이들이다.']},
+    {t:'품계(品階)',p:['공무원은 일품에서 구품까지 아홉 단계로 나뉜다. 현장으로 출정하는 공무원은 따로 출정관(出征官)이라 부르며, 출정관은 다섯 명 안팎의 대(隊)를 이루어 움직인다. 대장은 정청이 직접 임명한다.']},
+    {t:'청송대(靑松隊)',p:['정청 직속 출정대 가운데 가장 젊고 가장 강한 대. 대원 대부분이 율관학당 출신이며, 동부에서 가장 위험한 현장에 가장 먼저 투입된다. 동부 사람들은 청송대를 동부의 얼굴이라 부르고, 정청의 노관(老官)들은 동부의 골칫거리라 부른다.']},
+    {t:'출신의 낙인',p:['동부에서는 두 번째 길로 들어온 공무원을 금명(金名), 곧 돈으로 산 이름이라 부른다. 금명은 품계가 같아도 같은 상에 앉지 않는다. 실력으로 그 낙인을 지운 자는 동부의 기록에 손꼽을 만큼 드물다.']},
+    {t:'보호패(保護牌)',p:['공무원이 되면 그 가족에게 백옥으로 만든 보호패가 내려진다. 패를 지닌 자는 동부 성안에 거처를 얻고, 평생의 식량과 치료를 보장받는다. 공무원이 된다는 것은 한 사람이 출세하는 일이 아니라, 한 가문이 구원받는 일이다.']},
+    {t:'두 개의 길',p:['공무원이 되는 정식 경로는 단 하나, 정청 산하의 장도학당(裝道學堂)을 거치는 것이다. 학당은 동부 명문가의 자제들로 채워지며, 바깥 사람에게 문은 거의 열리지 않는다. 그러나 정청의 장부에는 기록되지 않는 두 번째 길이 있다. 충분한 돈을 바치면 이름 하나가 명부에 올라간다. 아무도 입 밖에 내지 않지만, 모두가 알고 있는 길이다.']},
+    {t:'풍경',p:['검정, 감색, 흰색. 동부는 장식을 과시하지 않는다. 처마의 곡선은 날카롭고, 정원의 소나무는 한 가지까지 다듬어져 있다. 이곳의 세련됨은 여유에서 나온다. 죽음을 걱정하지 않아도 되는 자들만이 가질 수 있는 여유다.']},
+    {t:'타 지역을 보는 시선',p:['동부 사람들은 서부를 \'갯것\', 남부를 \'점쟁이 땅\'이라 부른다. 북부는 지도에서 지워진 지 오래다.']}
+  ],
+  chars:[
+    {name:'최종수',role:'청송대 대장 · 주무기 창',desc:'정청 고관의 아들로 태어나 처음부터 정해진 길을 걸었다. 장도학당을 수석으로 나와 최연소로 대장 자리에 올랐으며, 아직 그 자리에 앉은 지 오래되지 않았다. 동부에서 그보다 창을 잘 쓰는 자는 없다. 고귀하게 자란 자의 오만과 결벽을 동시에 지녔고, 명령을 기다리지 않고 홀로 먼저 나아간다. 그가 먼저 말을 거는 사람은 동부 전체에 단 한 명뿐이다.'},
+    {name:'이규',role:'청송대 부대장 · 주무기 대도(大刀)',desc:'최종수의 오랜 벗이자 그가 말을 붙이는 유일한 사람이다. 직함은 부대장이지만 청송대를 실제로 이끄는 것은 그다. 앞서 나가는 대장의 뒤를 수습하고, 흩어진 대원들을 다독여 다시 하나로 묶는다. 무거운 대도를 휘두르는 손으로 사람을 달래는 데에도 능하다. 청송대가 무너지지 않는 이유를 묻는다면, 대원 모두가 그의 이름을 댈 것이다.'},
+    {name:'주찬양',role:'청송대 막내 · 주무기 활',desc:'청송대에서 가장 어리고 가장 말이 없다. 장도학당 출신의 정통파이며, 입보다 활시위가 먼저 움직인다. 전장에서 그의 위치를 아는 것은 화살이 날아온 방향뿐이다.'},
+    {name:'임승대',role:'청송대 대원 · 주무기 맨주먹',desc:'두 번째 길로 정청에 들어왔다. 첫날부터 금명이라는 낙인이 따라붙었지만, 그는 그 낙인을 말이 아니라 주먹으로 지웠다. 무기를 들지 않고도 이형을 쓰러뜨리는 그를 두고 청송대 안에서 출신을 입에 올리는 자는 더 이상 없다. 대원 가운데 서부를 가장 잘 아는 사람이기도 하다.'},
+    {name:'노수민',role:'청송대 대원 · 주무기 대형 망치',desc:'험악한 얼굴과 거대한 망치 때문에 처음 보는 이들은 그를 피해 간다. 그러나 청송대에서 가장 유순한 사람은 그다. 다툼이 생기면 먼저 물러서고, 다친 대원이 생기면 가장 먼저 업고 달린다. 정통파 출신이며, 망치를 내려놓으면 동부에서 가장 조용한 사람이 된다.'}
+  ]
+},
+west:{
+  name:'서부',h:'西部',title:'류교(柳橋)의 갯마을',
+  quote:'"바다가 가져가기 전에, 내가 먼저 가진다."',
+  intro:['사방에서 가장 가난하고 가장 위험한 땅이다. 바다와 맞닿은 탓에 이형이 가장 자주 올라온다. 버드나무가 늘어진 낡은 다리와 기울어진 정자, 짠물에 삭은 판잣집이 해안선을 따라 늘어서 있다. 그러나 서부는 죽은 땅이 아니다. 사방에서 가장 시끄럽고, 가장 살고 싶어 하는 땅이다.'],
+  sections:[
+    {t:'조종(潮鐘)',p:['서부의 모든 마을에는 바다를 향한 종이 걸려 있다. 종이 세 번 울리면 이형이 올라온 것이다. 서부 사람들은 종소리에 잠을 깨고, 종소리를 세며 나이를 먹는다. 아이들이 가장 먼저 배우는 것은 글이 아니라 조수표를 읽는 법이다.']},
+    {t:'뒷장(後場)',p:['류교 다리 아래에는 해가 진 뒤에만 열리는 시장이 있다. 이형의 비늘과 뼈, 동부에서 흘러나온 약재, 출처를 묻지 않는 물건들이 오간다. 서부에서 돈은 이곳에서 만들어지고, 이곳에서 사라진다.']},
+    {t:'무리',p:['서부에는 법이 없는 대신 무리가 있다. 흥신소에서 운반, 약물에 이르기까지 돈이 되는 일이라면 무엇이든 하는 조직들이 해안선의 구역을 나누어 쥐고 있다. 대부분은 하루를 버티기 위해 모였지만, 개중에는 단 하나의 목표를 위해 움직이는 무리도 있다. 동부의 공무원이 되는 것. 그 두 번째 길에 필요한 돈을 모으는 것.']},
+    {t:'사람들',p:['서부에는 출신을 묻지 않는다. 동부에서 쫓겨난 자, 남부에서 도망친 자, 어디서 왔는지 기억하지 못하는 자가 한데 섞여 산다. 그래서 서부는 가지각색이다. 그리고 그래서 서부에는 비밀이 많다.']},
+    {t:'풍경',p:['푸른 선화(線畫)의 땅. 젖은 쪽빛과 바랜 청색, 그 사이로 돛배 몇 척이 떠 있다. 아름다워 보이는 것은 멀리서 볼 때뿐이다.']},
+    {t:'지상(地上)',p:['서부에서 가장 큰 무리. 이름의 뜻은 \'땅 위\'. 바다에 먹히지 않고 땅 위에 남겠다는 뜻이라고도, 하늘(동부)에 오르기 전의 자리라는 뜻이라고도 한다. 흥신소에서 운반, 약물에 이르기까지 돈이 되는 일이라면 가리지 않는다. 한때는 이름만 큰 오합지졸이었으나, 지금의 수장이 들어선 뒤로 서부의 질서 일부를 쥐게 되었다.']},
+    {t:'지상의 장부',p:['지상은 서부의 무리 가운데 유일하게 장부를 쓴다. 들어온 돈과 나간 돈, 그 출처가 한 줄도 빠짐없이 기록된다. 지상이 무엇을 위해 돈을 모으는지 아는 자는 장부를 쓰는 두 사람뿐이다.']}
+  ],
+  chars:[
+    {name:'성준수',role:'지상 수장 · 주무기 맨주먹, 총',desc:'오래전 동부의 끝마을에서 도망쳐 서부로 흘러들었다. 왜 동부를 버렸는지는 아무도 모른다. 이름만 남은 지상의 전 수장을 끌어내리고 무리를 처음부터 다시 세웠으며, 지금의 지상은 전부 그의 손에서 만들어졌다. 지독한 두통을 달고 살아, 통증을 누르는 향낭을 늘 허리에 차고 다닌다. 담배 연기와 향낭 냄새가 함께 나면 그가 근처에 있다는 뜻이다. 주먹과 총, 두 가지를 모두 쓰며, 어느 쪽이든 망설이지 않는다. 쓰레기차에서 기상호를 건져 올린 것도 그다.'},
+    {name:'진재유',role:'지상 실무 총괄 · 주무기 표창',desc:'지상을 실제로 굴러가게 만드는 사람이다. 수장과 머리를 맞대고 일의 판을 짜며, 장부를 쓰는 두 사람 중 하나다. 조직원들을 살뜰히 챙기지만 다정함에 기대지 않고, 판단은 언제나 셈이 먼저다. 그가 던지는 표창은 소리가 없다. 맞은 자가 무엇에 맞았는지 알아차릴 즈음이면 이미 늦다.'},
+    {name:'공태성',role:'지상 행동대 겸 살림 담당 · 주무기 쇠국자',desc:'지상의 주먹이자 지상의 부엌이다. 조직원들의 끼니와 살림을 도맡으면서, 싸움이 나면 가장 앞에 선다. 그가 쓰는 국자는 보통 사람이 두 손으로도 들기 어려운 무쇠 덩어리다. 서부에서는 그의 국자에 맞은 자보다, 그의 밥을 얻어먹은 자가 더 많다.'},
+    {name:'김다은',role:'지상 행동대 · 주무기 갈고리 줄',desc:'지상에서 힘이 가장 센 대원이다. 갈고리가 달린 줄을 던져 이형의 비늘 사이를 꿰고, 그대로 끌어당겨 땅에 처박는다. 바다에서 올라온 것을 다시 바다로 돌려보내지 않는 것이 그 줄의 역할이다.'},
+    {name:'기상호',role:'지상 대원 · 주무기 쇠사슬',desc:'어느 날 서부에 갑자기 나타났다. 어디서 왔는지, 어떻게 왔는지 아무도 모른다. 쓰레기차에 실려 있던 그를 성준수가 건져 올렸고, 그날부터 그는 은혜를 갚겠다며 성준수의 뒤를 따라다니다 결국 지상에 들어왔다. 목에는 언제나 천을 감고 있으며, 그 아래를 본 사람은 없다. 양손에 쇠사슬을 감고 다니지만 무겁다는 이유로 자주 풀어 둔다. 사슬이 풀려 있을 때의 그는 그저 사람 좋은 청년처럼 보인다.'}
+  ]
+},
+south:{
+  name:'남부',h:'南部',title:'만신(萬神)의 땅',
+  quote:'"신은 이미 모든 것을 말해 두었다."',
+  intro:['신을 믿는 자들의 땅이다. 남부 사람들은 이형의 출몰을 재앙이 아니라 신벌(神罰)로 받아들였다. 그리고 벌을 내린 신에게 엎드리는 쪽을 택했다. 오방색 깃발이 바람에 찢어질 듯 펄럭이고, 어디를 가든 방울 소리와 향 냄새가 따라온다.'],
+  sections:[
+    {t:'만신(萬神)',p:['남부의 정점에는 신의 대리인이 있다. 남부 사람들은 그를 만신이라 부른다. 만신은 신의 말을 받아 사람의 말로 옮기는 자이며, 남부의 모든 결정은 만신의 입에서 나온다. 만신은 세습되지 않는다. 신이 다음 그릇을 고른다고 전해진다.']},
+    {t:'신당(神堂)',p:['만신이 머무는 곳. 남부의 한가운데 자리하며, 오방색 천이 아홉 겹으로 둘러쳐져 있다. 공수는 이곳에서만 내려진다. 신당 안에 들어가 본 외부인은 손에 꼽으며, 들어간 자들은 그 안에서 본 것을 말하지 않는다.']},
+    {t:'방울수(鈴手)',p:['만신을 곁에서 지키는 무리. 손목에 방울을 차고 다니며, 그 소리로 서로의 위치를 알린다. 남부에서 방울 소리가 한꺼번에 멎으면 만신이 움직인다는 뜻이다.']},
+    {t:'공수(貢授)',p:['만신이 받아 내리는 예언을 공수라 한다. 공수는 비유로 가득하고, 해석하는 자에 따라 뜻이 달라진다. 그러나 남부의 공수는 실제로 맞는다. 그것이 남부가 사방에서 무시당하면서도 무너지지 않는 이유다. 동부의 고관들조차 사람을 보내 은밀히 공수를 사 간다.']},
+    {t:'신계보(神系譜)',p:['남부의 가문들은 피보다 신과의 인연으로 서열을 매긴다. 신계보에는 각 가문이 어떤 신을 모시는지, 어떤 피가 섞였는지가 기록되어 있다. 이 계보는 만신과 몇몇 가문의 수장만이 열람할 수 있다. 남부의 족보가 유독 복잡한 데에는 이유가 있다.']},
+    {t:'계율',p:['남부에서는 신이 내린 이름이 있는 자를 함부로 부르지 않는다. 신을 모시는 굿에는 외부인이 들 수 없다. 그리고 공수를 거스른 자의 집 앞에는 붉은 실이 걸린다.']},
+    {t:'풍경',p:['족자 속 세로로 긴 산수화. 겹겹이 솟은 봉우리 사이로 알록달록한 구름이 흐른다. 남부는 사방에서 가장 화려하지만, 그 화려함은 축제의 것이 아니라 제사의 것이다.']}
+  ],
+  chars:[
+    {name:'박병찬',role:'당대의 만신, 신의 대리인 · 주무기 방울 철퇴',desc:'말을 배우기 전부터 신의 대리인이라 불렸다. 남부에서 그는 신의 말을 옮기는 자가 아니라, 신 그 자체로 여겨진다. 그가 내린 공수는 단 한 번도 빗나간 적이 없다. 남부의 모든 사람이 그를 따르며, 따르지 않을 이유를 찾지 못한다. 예언만이 아니다. 머리가 비상하고, 무력마저 뛰어나다. 동부의 정청은 그를 따라잡을 수 있는 자가 사방에 없다고 판단하고 있다. 그럼에도 크게 경계하지 않는 이유는 단 하나, 그가 남부 밖으로 한 번도 나온 적이 없기 때문이다. 양 손목과 양 발목에는 언제나 붕대가 감겨 있다. 그가 철퇴를 휘두를 때 울리는 방울 소리를, 남부 사람들은 신의 웃음소리라 부른다.'}
+  ]
+},
+north:{
+  name:'북부',h:'北部',title:'백무(白霧)의 섬',
+  quote:'"아무도 돌아오지 않았다."',
+  intro:['지도의 가장 위, 안개에 잠긴 땅이다. 분열 이후 북부와의 연락은 끊겼다. 북부로 향하는 바다에는 이형이 가장 짙게 깔려 있어, 그곳을 건너려 한 배는 하나도 돌아오지 않았다. 사람들은 북부를 버려진 땅이라 부른다. 이미 이형이 득실거리는 무덤이라고.'],
+  sections:[
+    {t:'백무',p:['북부를 감싼 안개는 계절이 바뀌어도 걷히지 않는다. 바람이 불어도 흩어지지 않고, 햇빛이 비쳐도 엷어지지 않는다. 자연의 안개라 하기에는 지나치게 고요하다.']},
+    {t:'목격담',p:['서부의 늙은 어부들 사이에는 오래된 이야기가 돈다. 맑은 밤이면 안개 너머로 등불이 보인다는 것. 무덤에는 불을 밝힐 자가 없다.']},
+    {t:'전승',p:['북부에 대한 말은 둘로 갈린다. 대부분은 그곳을 지옥이라 부른다. 그러나 아주 드물게, 그곳을 다르게 부르는 자들이 있다. 북부에는 모든 것이 있다. 병도, 굶주림도, 이형도 없는 땅. 그리고 그 땅은 아무에게나 길을 열어 주지 않는다고.']},
+    {t:'풍경',p:['푸른 먹으로 그린 산과 강. 절벽과 대나무, 끝이 보이지 않는 다리. 북부는 그려지지 않은 여백으로 존재한다.']}
+  ],
+  chars:[]
+}
+};
+
+/* ===== AUDIO ENGINE ===== */
+const A={
+  muted:true,region:null,ctx:null,clickBuf:null,
+  tracks:{east:'east.mp3',west:'west.mp3',south:'south.mp3',north:'north.mp3'},
+  audios:{},
+
+  init(){
+    for(const[k,src] of Object.entries(this.tracks)){
+      const a=new Audio(src);
+      a.loop=true;a.volume=0;a.preload='auto';
+      this.audios[k]=a;
+    }
+  },
+
+  _initClick(){
+    if(this.ctx)return;
+    this.ctx=new(window.AudioContext||window.webkitAudioContext)();
+    const sr=this.ctx.sampleRate,len=Math.floor(sr*0.03);
+    const buf=this.ctx.createBuffer(1,len,sr);
+    const d=buf.getChannelData(0);
+    for(let i=0;i<len;i++){
+      const t=i/sr;
+      d[i]=Math.sin(2*Math.PI*1800*t)*Math.exp(-t*180)*0.15;
+    }
+    this.clickBuf=buf;
+  },
+
+  click(){
+    if(this.muted)return;
+    try{
+      this._initClick();
+      const s=this.ctx.createBufferSource(),g=this.ctx.createGain();
+      s.buffer=this.clickBuf;
+      g.gain.value=0.4;
+      s.connect(g);g.connect(this.ctx.destination);
+      s.start();
+    }catch(e){}
+  },
+
+  toggle(){
+    this.muted=!this.muted;
+    const b=document.getElementById('snd');
+    b.textContent=this.muted?'♪':'♫';
+    b.classList.toggle('on',!this.muted);
+    if(this.region&&this.audios[this.region]){
+      const a=this.audios[this.region];
+      if(this.muted){this._fade(a,0);}
+      else{a.play().catch(()=>{});this._fade(a,1);}
+    }
+  },
+
+  _fade(audio,to){
+    const from=audio.volume,steps=30,dur=600,step=(to-from)/steps;
+    let i=0;
+    const iv=setInterval(()=>{
+      i++;audio.volume=Math.max(0,Math.min(1,from+step*i));
+      if(i>=steps){clearInterval(iv);if(to===0)audio.pause();}
+    },dur/steps);
+  },
+
+  play(r){
+    const prev=this.region;
+    this.region=r;
+    if(prev&&this.audios[prev]){this._fade(this.audios[prev],0);}
+    if(!this.muted&&this.audios[r]){
+      const a=this.audios[r];
+      a.play().catch(()=>{});this._fade(a,1);
+    }
+  }
+};
+
+/* ===== BUILDERS ===== */
+function mkNav(cur){
+  const rs=[['east','東'],['west','西'],['south','南'],['north','北']];
+  let h='<nav class="rnav"><a href="#home" class="back">←</a>';
+  rs.forEach(([k,v])=>{h+=`<a href="#${k}" class="${k===cur?'on':''}">${v}</a>`});
+  return h+'</nav>';
+}
+function mkChars(chars){
+  if(!chars.length)return'<p class="no-char">아직 알려진 인물이 없다.</p>';
+  return`<div class="chars">${chars.map(c=>`
+    <div class="char">
+      <div class="char-port">일러스트</div>
+      <div class="char-name">${c.name}</div>
+      <div class="char-role">${c.role}</div>
+      ${c.desc?`<div class="char-desc">${c.desc}</div>`:''}
+    </div>`).join('')}</div>`;
+}
+function mkSections(sections,cls){
+  return sections.map(s=>`<div class="${cls||''}">
+    <div class="sec-label">${s.t}</div>
+    ${s.p.map(p=>`<p>${p}</p>`).join('')}
+  </div>`).join('');
+}
+function mkFoot(){
+  return`<div class="foot">
+    <a href="#home">처음으로</a>
+    <a href="#east">東</a><a href="#west">西</a>
+    <a href="#south">南</a><a href="#north">北</a>
+  </div>`;
+}
+
+const B={
+home(){
+  return`<div class="home-bg"></div>
+  <div class="home-wrap">
+    <h1 class="home-title an">四國</h1>
+    <p class="home-sub an2">사방(四方)</p>
+    <p class="home-prologue an2">${D.prologue}</p>
+    <div class="home-links">
+      <a href="#east" class="home-link an3" style="--accent:#1a1a18;--glow:#1a1a18">
+        東部<span class="dash"></span><span class="hj">질서와 권위의 땅</span>
+      </a>
+      <a href="#west" class="home-link an3" style="--accent:#8a7a50;--glow:#8a7a50">
+        西部<span class="dash"></span><span class="hj">절박한 자들의 땅</span>
+      </a>
+      <a href="#south" class="home-link an4" style="--accent:#8a2020;--glow:#8a2020">
+        南部<span class="dash"></span><span class="hj">피와 의식의 땅</span>
+      </a>
+      <a href="#north" class="home-link an5" style="--accent:#7a8a9a;--glow:#7a8a9a">
+        北部<span class="dash"></span><span class="hj">미지의 영역</span>
+      </a>
+    </div>
+  </div>`;
+},
+
+east(){
+  const d=D.east;
+  return`
+    <div class="east-vert">${d.h}</div>
+    <div class="east-body">
+      ${mkNav('east')}
+      <h2 class="an">${d.h}</h2>
+      <p class="sub an2">${d.title}</p>
+      <p class="quote an3">${d.quote}</p>
+      ${d.intro.map((p,i)=>`<p class="an${i+4}">${p}</p>`).join('')}
+      <hr class="east-rule">
+      ${d.sections.map(s=>`<div class="sec-label">${s.t}</div>${s.p.map(p=>`<p>${p}</p>`).join('')}<hr class="east-rule">`).join('')}
+      <div class="sec-label">인물</div>
+      ${mkChars(d.chars)}
+      ${mkFoot()}
+    </div>`;
+},
+
+west(){
+  const d=D.west;
+  return`<div class="west-wrap">
+    ${mkNav('west')}
+    <div class="west-head an">
+      <h2>${d.h}</h2>
+      <p class="sub">${d.title}</p>
+      <p class="quote">${d.quote}</p>
+    </div>
+    <div class="west-file t1 an2">
+      ${d.intro.map(p=>`<p>${p}</p>`).join('')}
+    </div>
+    ${d.sections.map((s,i)=>`<div class="sec-label an${i+3}">${s.t}</div>
+    <div class="west-file t${(i%2)+1} an${i+3}">
+      ${s.p.map(p=>`<p>${p}</p>`).join('')}
+    </div>`).join('')}
+    <div class="sec-label an4">인물</div>
+    ${mkChars(d.chars)}
+    ${mkFoot()}
+  </div>`;
+},
+
+south(){
+  const d=D.south;
+  return`
+    <div class="south-glow"><div class="south-glow-a"></div><div class="south-glow-b"></div></div>
+    <div class="south-wrap">
+      ${mkNav('south')}
+      <h2 class="an">${d.h}</h2>
+      <p class="sub an2">${d.title}</p>
+      <p class="quote an3">${d.quote}</p>
+      ${d.intro.map((p,i)=>`<p class="an${i+4}">${p}</p>`).join('')}
+      ${d.sections.map(s=>`<div class="south-div"></div>
+      <div class="sec-label">${s.t}</div>
+      ${s.p.map(p=>`<p>${p}</p>`).join('')}`).join('')}
+      <div class="south-div"></div>
+      <div class="sec-label">인물</div>
+      ${mkChars(d.chars)}
+      ${mkFoot()}
+    </div>`;
+},
+
+north(){
+  const d=D.north;
+  return`
+    <div class="north-fog"></div>
+    <div class="north-mist"></div>
+    <div class="north-wrap">
+      ${mkNav('north')}
+      <h2 class="an">${d.h}</h2>
+      <p class="sub an2">${d.title}</p>
+      <p class="quote an3">${d.quote}</p>
+      <div class="nr">${d.intro.map(p=>`<p>${p}</p>`).join('')}</div>
+      ${d.sections.map(s=>`<div class="nr">
+        <div class="sec-label">${s.t}</div>
+        ${s.p.map(p=>`<p>${p}</p>`).join('')}
+      </div>`).join('')}
+      <div class="nr">
+        <div class="sec-label">인물</div>
+        ${mkChars(d.chars)}
+      </div>
+      ${mkFoot()}
+    </div>`;
+}
+};
+
+/* ===== ROUTER ===== */
+function go(){
+  const hash=location.hash.slice(1)||'home';
+  const r=B[hash]?hash:'home';
+  const app=document.getElementById('app');
+  app.classList.add('fade');
+  setTimeout(()=>{
+    document.body.setAttribute('data-r',r);
+    app.innerHTML=B[r]();
+    app.classList.remove('fade');
+    window.scrollTo({top:0,behavior:'instant'});
+    A.play(r);
+    if(r==='north'){
+      const obs=new IntersectionObserver(es=>{
+        es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis')});
+      },{threshold:.12,rootMargin:'0px 0px -40px 0px'});
+      document.querySelectorAll('.nr').forEach(el=>obs.observe(el));
+    }
+  },450);
+}
+
+A.init();
+window.addEventListener('hashchange',go);
+document.getElementById('snd').addEventListener('click',()=>A.toggle());
+document.addEventListener('click',e=>{
+  if(e.target.closest('a,button,.home-link,.west-file'))A.click();
+});
+go();
+</script>
+</body>
+</html>

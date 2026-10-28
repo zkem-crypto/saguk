@@ -212,25 +212,81 @@ body{
 [data-r="north"] .foot{border-top-color:rgba(58,62,70,.1);position:relative;z-index:3}
 
 /* ===== CHARACTER CARDS ===== */
+/* toggle */
+.chars-toggle{
+  display:flex;align-items:center;gap:.6rem;cursor:pointer;
+  margin-top:.5rem;padding:.4rem 0;user-select:none;
+}
+.chars-toggle .arrow{
+  font-size:.7rem;transition:transform .3s ease;display:inline-block;
+}
+.chars-toggle.open .arrow{transform:rotate(90deg)}
+.chars-toggle .toggle-label{
+  font-size:.82rem;font-weight:300;opacity:.45;letter-spacing:.08em;
+}
+.chars-list{
+  display:none;flex-direction:column;gap:1rem;margin-top:1.2rem;
+}
+.chars-list.open{display:flex}
 .chars{display:flex;flex-direction:column;gap:2.5rem;margin-top:1.5rem}
-.char{display:flex;gap:1.8rem;width:min(520px,100%)}
-.char-port{
-  width:140px;min-width:140px;height:187px;
+.char{
+  display:flex;align-items:center;gap:1rem;cursor:pointer;
+  padding:.6rem .8rem;border-radius:4px;
+  transition:background .25s ease;
+}
+.char:hover{background:rgba(128,128,128,.06)}
+.char-thumb{
+  width:44px;height:58px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  font-size:.4rem;letter-spacing:.1em;font-weight:300;overflow:hidden;
+}
+[data-r="east"] .char-thumb{border:1px solid rgba(0,0,0,.06);background:#f5f5f2;color:#aaa}
+[data-r="west"] .char-thumb{border:1px solid rgba(140,120,90,.3);background:rgba(220,210,190,.25);color:#9a8a70}
+[data-r="south"] .char-thumb{
+  border:1px solid rgba(122,88,40,.2);background:rgba(15,8,5,.6);color:rgba(122,88,40,.35);
+}
+[data-r="north"] .char-thumb{background:rgba(190,196,206,.25);color:rgba(100,106,120,.2)}
+.char-summary{flex:1;min-width:0}
+.char-name{font-size:.88rem;font-weight:600;letter-spacing:.05em}
+.char-role{font-size:.72rem;font-weight:300;opacity:.4;margin-top:.15rem}
+/* modal */
+.char-modal-overlay{
+  position:fixed;top:0;left:0;width:100%;height:100%;z-index:200;
+  background:rgba(0,0,0,.55);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;transition:opacity .3s ease;pointer-events:none;
+}
+.char-modal-overlay.open{opacity:1;pointer-events:auto}
+.char-modal{
+  width:min(440px,90vw);max-height:85vh;overflow-y:auto;
+  padding:2.5rem 2.2rem;position:relative;
+  border:1px solid rgba(128,128,128,.12);
+}
+[data-r="east"] .char-modal{background:#fafaf7;color:#1a1a18}
+[data-r="west"] .char-modal{background:#e8dfd0;color:#2a2520}
+[data-r="south"] .char-modal{background:#1a100c;color:#c8b89a;border-color:rgba(122,88,40,.2)}
+[data-r="north"] .char-modal{background:#d8dce2;color:#2a2e34}
+.char-modal-close{
+  position:absolute;top:1rem;right:1.2rem;
+  background:none;border:none;color:inherit;cursor:pointer;
+  font-size:1.1rem;opacity:.3;transition:opacity .2s;
+}
+.char-modal-close:hover{opacity:.7}
+.char-modal-port{
+  width:160px;height:213px;margin:0 auto 1.8rem;
   display:flex;align-items:center;justify-content:center;
   font-size:.6rem;letter-spacing:.2em;font-weight:300;overflow:hidden;
-  flex-shrink:0;align-self:flex-start;
 }
-.char-info{flex:1;display:flex;flex-direction:column;justify-content:center;min-width:0}
-[data-r="east"] .char-port{border:1px solid rgba(0,0,0,.06);background:#f5f5f2;color:#aaa}
-[data-r="west"] .char-port{border:1px solid rgba(140,120,90,.3);background:rgba(220,210,190,.25);color:#9a8a70;transform:rotate(0.4deg)}
-[data-r="south"] .char-port{
+[data-r="east"] .char-modal-port{border:1px solid rgba(0,0,0,.06);background:#f5f5f2;color:#aaa}
+[data-r="west"] .char-modal-port{border:1px solid rgba(140,120,90,.3);background:rgba(220,210,190,.25);color:#9a8a70}
+[data-r="south"] .char-modal-port{
   border:1px solid rgba(122,88,40,.2);background:rgba(15,8,5,.6);color:rgba(122,88,40,.35);
   box-shadow:0 0 40px rgba(100,15,15,.08),inset 0 0 30px rgba(0,0,0,.3);
 }
-[data-r="north"] .char-port{background:rgba(190,196,206,.25);color:rgba(100,106,120,.2);filter:blur(0.5px)}
-.char-name{font-size:.95rem;font-weight:600;margin-bottom:.3rem;letter-spacing:.05em}
-.char-role{font-size:.75rem;line-height:1.7;font-weight:400;opacity:.5;margin-bottom:.6rem}
-.char-desc{font-size:.82rem;line-height:1.9;font-weight:300;opacity:.55}
+[data-r="north"] .char-modal-port{background:rgba(190,196,206,.25);color:rgba(100,106,120,.2)}
+.char-modal-name{font-size:1.1rem;font-weight:600;letter-spacing:.08em;text-align:center;margin-bottom:.3rem}
+.char-modal-role{font-size:.78rem;font-weight:300;opacity:.45;text-align:center;margin-bottom:1.5rem;letter-spacing:.05em}
+.char-modal-desc{font-size:.88rem;line-height:2;font-weight:300;opacity:.7}
 .no-char{opacity:.2;font-size:.82rem;font-weight:300;font-style:italic;margin-top:.5rem}
 .quote{font-size:.9rem;font-weight:300;opacity:.4;font-style:italic;letter-spacing:.05em;margin-bottom:2rem}
 .home-prologue{
@@ -271,6 +327,15 @@ body{
 </head>
 <body data-r="home">
 <div id="app"></div>
+<div class="char-modal-overlay" id="charModal">
+  <div class="char-modal">
+    <button class="char-modal-close">✕</button>
+    <div class="char-modal-port">일러스트</div>
+    <div class="char-modal-name"></div>
+    <div class="char-modal-role"></div>
+    <div class="char-modal-desc"></div>
+  </div>
+</div>
 <button id="snd" title="소리 켜기/끄기">♪</button>
 
 <script>
@@ -430,15 +495,20 @@ function mkNav(cur){
 }
 function mkChars(chars){
   if(!chars.length)return'<p class="no-char">아직 알려진 인물이 없다.</p>';
-  return`<div class="chars">${chars.map(c=>`
-    <div class="char">
-      <div class="char-port">일러스트</div>
-      <div class="char-info">
-        <div class="char-name">${c.name}</div>
-        <div class="char-role">${c.role}</div>
-        ${c.desc?`<div class="char-desc">${c.desc}</div>`:''}
-      </div>
-    </div>`).join('')}</div>`;
+  return`
+    <div class="chars-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')">
+      <span class="arrow">▶</span>
+      <span class="toggle-label">${chars.length}명</span>
+    </div>
+    <div class="chars-list">${chars.map((c,i)=>`
+      <div class="char" data-ci="${i}">
+        <div class="char-thumb">일러스트</div>
+        <div class="char-summary">
+          <div class="char-name">${c.name}</div>
+          <div class="char-role">${c.role}</div>
+        </div>
+      </div>`).join('')}
+    </div>`;
 }
 function mkSections(sections,cls){
   return sections.map(s=>`<div class="${cls||''}">
@@ -562,6 +632,32 @@ north(){
 }
 };
 
+/* ===== CHAR MODAL ===== */
+let _curChars=[];
+function openCharModal(i){
+  const c=_curChars[i];if(!c)return;
+  const m=document.getElementById('charModal');
+  m.querySelector('.char-modal-name').textContent=c.name;
+  m.querySelector('.char-modal-role').textContent=c.role;
+  m.querySelector('.char-modal-desc').textContent=c.desc||'';
+  m.classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeCharModal(){
+  const m=document.getElementById('charModal');
+  m.classList.remove('open');
+  document.body.style.overflow='';
+}
+document.getElementById('charModal').addEventListener('click',e=>{
+  if(e.target.closest('.char-modal')&&!e.target.closest('.char-modal-close'))return;
+  closeCharModal();
+});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeCharModal()});
+document.addEventListener('click',e=>{
+  const card=e.target.closest('.char[data-ci]');
+  if(card)openCharModal(+card.dataset.ci);
+});
+
 /* ===== ROUTER ===== */
 function go(){
   const hash=location.hash.slice(1)||'home';
@@ -570,6 +666,7 @@ function go(){
   app.classList.add('fade');
   setTimeout(()=>{
     document.body.setAttribute('data-r',r);
+    _curChars=(D[r]&&D[r].chars)||[];
     app.innerHTML=B[r]();
     app.classList.remove('fade');
     window.scrollTo({top:0,behavior:'instant'});
